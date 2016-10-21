@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+if [ "$#" != 1 ]
+then
+    echo 'What is my purpose? It should be either "run", "compile" or "clean"' > /dev/stderr
+    exit 1
+fi
+
+class_path=".:/usr/share/java/mysql-connector-java-bin.jar"
+dir_path="com/zli/example"
+
+case "$1" in
+    "compile")
+        javac -cp "$class_path" "$dir_path/"*.java
+        ;;
+    "run")
+        java -cp "$class_path" "$dir_path/HtmlParser"
+        ;;
+    "clean")
+        rm "$dir_path"/*.class
+        ;;
+    *)
+        echo 'Purpose unknown' > /dev/stderr
+        exit 2
+        ;;
+esac
