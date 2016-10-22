@@ -1,1 +1,41 @@
 \section{Introduction}
+
+% Why automatic repair is good for you
+In the world of countless software bugs and limited resources to fix them, automatic software repair tools are a desirable instrument that can decrease the developers' workload.
+Current automatic repair tools aim at fixing simpler bugs and thus give developers the chance to concentrate on more sophisticated bugs.
+In addition, developers' time is highly valuable from the economic point of view; thus, automatic repair tools should significantly decrease the expenses  associated with software maintenance.
+Ideally, the process of bug-fixing should be automated: an automatic repair tool receives a buggy program and outputs the fix for this bug.
+
+% Why vulnerabilities are bad for you
+One of the important subsets of all the bugs is software vulnerabilities, as they can lead to substantial financial losses and great customers' dissatisfaction; among the most notorious examples are Slammer and Morris worms~\cite{moore2003inside, streak2003morris}.
+Moreover, software vulnerabilities of mobile phones are of a particular importance due to the ubiquity of mobile apps and a great amount of private data on mobile phones, which is often undervalued~\cite{egelman2014you}.
+
+% G&V automatic repair
+Several automatic software repair tools were proposed~\cite{le2012systematic, long2015staged, mechtaev2016angelix} that are able to fix some subsets of bugs (including software vulnerabilities).
+One of the most common approaches is the co-called Generate-and-validate (G\&V) approach, in which the target project has a bug that is exposed in some failing tests; the automatic repair tool goes through the list of potential fixes (\emph{the search space}), applies the fix and runs the tests; if all the tests pass, then the fix is considered to be correct and it is presented to the developer.
+Otherwise, the tool picks the next fix and runs the tests again.
+
+% The problem of overfitted patches
+Along with the test cases that expose the bug (\emph{negative test cases}), a G\&V tool also accepts the test cases that verify the existing functionality of the program (\emph{positive test cases}) that are needed to avoid regressions.
+The imperfection of a test suite can lead to \emph{overfitted} patches---patches that make all the test cases pass but nonetheless are incorrect.
+Analogically to the concept of overfitness in machine learning, where classifiers may be overfitted to training data and perform poorly on new instances, these incorrect patches overfit existing test suites, but newly added test cases can expose defects in these patches.
+For example, consider a bug that is exposed through a negative test case; however, there is no positive test case that would verify the functionality, in which the bug resides.
+The simplest patch would just remove the functionality altogether and thus would make all the test cases pass.
+Obviously, this patch would be incorrect and would not be accepted by the developer.
+
+% Our solution to the problem
+The first problem with the existing search spaces is straightforward: if a search space does not contain a correct patch, then it will never be found.
+By constructing richer search spaces (that contain more correct patches), automatic repair tool may be able to find more correct patches.
+However, Long et al.~\cite{long2016analysis} showed that, in the search spaces of G\&V automatic repair tools, overfitted patches dominate over correct ones by orders of magnitude.
+In addition, they discovered that richer search spaces lead to \emph{fewer} correct patches found!
+Based on that, Long et al. outlined a need in more precise search spaces---the search spaces that would contain as many correct patches and as few overfitted patches as possible.
+
+% What has been done
+In our work, we created search spaces that are precise in two dimensions: (1) they target \emph{mobile systems} and (2) they target \emph{security vulnerabilities} specifically.
+The project consisted of the following stages:
+(1) mining vulnerabilities of mobile software from open-source repositories;
+(2) manual analysis of the retrieved patches;
+(3) devising the search spaces that contain correct patches for the analyzed vulnerabilities; and 
+(4) evaluating the search spaces in terms of how many correct patches they contain and what is the density of correct patches compared to the total number of patches.
+The result of our project is a set of targeted search spaces that aim at repairing mobile vulnerabilities.
+To the best of our knowledge, there are no prior work of building G\&V automatic repair tools specifically for fixing \emph{vulnerabilities} in \emph{mobile} software; this project will be the first step in building such a tool.
