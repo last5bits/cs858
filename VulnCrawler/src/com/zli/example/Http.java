@@ -1,7 +1,6 @@
 package com.zli.example;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -19,7 +18,8 @@ public class Http
             while ((line = rd.readLine()) != null) {
                 result.append(line);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
+            System.out.println(urlStr);
             System.err.println(e.toString());
         }
         return result.toString();
