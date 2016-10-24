@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ "$#" != 1 ]
+if [ "$#" -lt 1 ]
 then
     echo 'What is my purpose? It should be either "run", "compile" or "clean"' > /dev/stderr
     exit 1
@@ -13,12 +13,23 @@ case "$1" in
     "compile")
         javac -cp "$class_path" "$dir_path/"*.java
         ;;
+
     "run")
-        java -cp "$class_path" "$dir_path/HtmlParser"
+        shift
+        if [ -z "$1" ]
+        then
+            java -cp "$class_path" "$dir_path/HtmlParser"
+        else
+            class_name="$1"
+            shift
+            java -cp "$class_path" "$dir_path/$class_name" "$*"
+        fi
         ;;
+
     "clean")
         rm "$dir_path"/*.class
         ;;
+
     *)
         echo 'Purpose unknown' > /dev/stderr
         exit 2
