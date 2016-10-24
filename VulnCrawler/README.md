@@ -18,6 +18,8 @@ $ keytool -import
 	-keystore path_to_java_keystore
 ```
 
+* (The default password for the JVM truststore is `changeit`)
+
 ## Setting Up MySQL
 Create `vulnerability` table and `cve` table with following commands:
 
