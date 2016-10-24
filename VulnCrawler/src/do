@@ -18,11 +18,11 @@ case "$1" in
         shift
         if [ -z "$1" ]
         then
-            java -cp "$class_path" "$dir_path/HtmlParser"
+            java -enableassertions -cp "$class_path" "$dir_path/HtmlParser"
         else
             class_name="$1"
             shift
-            java -cp "$class_path" "$dir_path/$class_name" "$*"
+            java -enableassertions -cp "$class_path" "$dir_path/$class_name" "$*"
         fi
         ;;
 
