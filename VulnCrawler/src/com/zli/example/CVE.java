@@ -11,6 +11,7 @@ public class CVE
     private static final String DB_BUG = "bug";
     private static final String DB_DEVICE = "device";
     private static final String DB_VERSION = "version";
+    private static final String DB_REPO_NAME = "repo_name";
     private static final String DB_COMMIT = "commit";
     private static final String DB_PARENT_COMMIT = "parent_commit";
     
@@ -35,13 +36,14 @@ public class CVE
 
     public void insertDatabase(int vulnerabilityId) {
         String sql = "INSERT INTO cve (v_id, cve_title, severity, date, bug, device, version, "
-                + "commit, parent_commit) VALUES (" + vulnerabilityId + ", " +
+                + "repo_name, commit, parent_commit) VALUES (" + vulnerabilityId + ", " +
                 "\"" + HtmlParser.clean(fieldMap.get(DB_CVE_TITLE)) + "\", " +
                 "\"" + HtmlParser.clean(fieldMap.get(DB_SEVERITY)) + "\", " +
                 "\"" + HtmlParser.clean(fieldMap.get(DB_DATE)) + "\", " +
                 "\"" + HtmlParser.clean(fieldMap.get(DB_BUG)) + "\", " +
                 "\"" + HtmlParser.clean(fieldMap.get(DB_DEVICE)) + "\", " +
                 "\"" + HtmlParser.clean(fieldMap.get(DB_VERSION)) + "\", " +
+                "\"" + HtmlParser.clean(fieldMap.get(DB_REPO_NAME)) + "\", " +
                 "\"" + HtmlParser.clean(fieldMap.get(DB_COMMIT)) + "\", " +
                 "\"" + HtmlParser.clean(fieldMap.get(DB_PARENT_COMMIT)) + "\");";
         Database database = new Database();
@@ -63,10 +65,10 @@ public class CVE
                 String commit = url.substring(commitStartIndex + 1, url.length());
                 fieldMap.put(DB_COMMIT, commit);
                 
-                // Get parent commit id.
                 Http http = new Http();
                 String html = http.httpGet(url);
                 if (html != null && !html.equals("")) {
+                    // Get parent commit id.
                     int parentStartIndex = html.indexOf("parent");
                     parentStartIndex += "parent".length();
                     while (html.charAt(parentStartIndex) == '<') {
@@ -76,6 +78,21 @@ public class CVE
                     int parentEndIndex = html.indexOf('<', parentStartIndex);
                     String parentCommit = html.substring(parentStartIndex, parentEndIndex);
                     fieldMap.put(DB_PARENT_COMMIT, parentCommit);
+
+                    // Get repo name
+                    // wordNo-th word in the title is the repo name
+                    final int wordNo = url.contains(RepoWebSite.GoogleSource) ? 2 : 0;
+
+                    String titleOpenTag = "<title>";
+                    String titleCloseTag = "</title>";
+                    final int titleStartIndex = html.indexOf(titleOpenTag);
+                    final int titleEndIndex = html.indexOf(titleCloseTag);
+                    String title = html.substring(titleStartIndex + titleOpenTag.length(), titleEndIndex);
+
+                    String[] titleWords = title.split("\\s+");
+                    assert titleWords.length >= wordNo;
+                    String repoName = titleWords[wordNo];
+                    fieldMap.put(DB_REPO_NAME, repoName);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -90,6 +107,7 @@ public class CVE
         System.out.println(DB_BUG + " : " + fieldMap.get(DB_BUG));
         System.out.println(DB_DEVICE + " : " + fieldMap.get(DB_DEVICE));
         System.out.println(DB_VERSION + " : " + fieldMap.get(DB_VERSION));
+        System.out.println(DB_REPO_NAME + " : " + fieldMap.get(DB_REPO_NAME));
         System.out.println();
     }
     
@@ -101,7 +119,46 @@ public class CVE
         if (originHead.contains("bug") || originHead.contains("reference")) return DB_BUG;
         if (originHead.contains("device")) return DB_DEVICE;
         if (originHead.contains("version")) return DB_VERSION;
+        if (originHead.contains("repo_name")) return DB_REPO_NAME;
         return "";
     }
 
+    public static void main(String args[]) {
+        try {
+            String url = args[0];
+            Http http = new Http();
+            String html = http.httpGet(url);
+
+            System.out.println(url);
+
+            if (html != null && !html.equals("")) {
+                // Get parent commit id.
+                int parentStartIndex = html.indexOf("parent");
+                parentStartIndex += "parent".length();
+                while (html.charAt(parentStartIndex) == '<') {
+                    int endOfTag = html.indexOf('>', parentStartIndex);
+                    parentStartIndex = endOfTag + 1;
+                }
+                int parentEndIndex = html.indexOf('<', parentStartIndex);
+                String parentCommit = html.substring(parentStartIndex, parentEndIndex);
+
+                // Get repo name
+                // wordNo-th word in the title is the repo name
+                final int wordNo = url.contains(RepoWebSite.GoogleSource) ? 2 : 0;
+
+                String titleOpenTag = "<title>";
+                String titleCloseTag = "</title>";
+                final int titleStartIndex = html.indexOf(titleOpenTag);
+                final int titleEndIndex = html.indexOf(titleCloseTag);
+                String title = html.substring(titleStartIndex + titleOpenTag.length(), titleEndIndex);
+
+                String[] titleWords = title.split("\\s+");
+                assert titleWords.length >= wordNo;
+                String repoName = titleWords[wordNo];
+                System.out.println(repoName);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
