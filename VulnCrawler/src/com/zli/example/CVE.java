@@ -26,6 +26,7 @@ public class CVE
         fieldMap.put(DB_BUG, "");
         fieldMap.put(DB_DEVICE, "");
         fieldMap.put(DB_VERSION, "");
+        fieldMap.put(DB_REPO_NAME, "");
         fieldMap.put(DB_COMMIT, "");
         fieldMap.put(DB_PARENT_COMMIT, "");
     }
@@ -64,40 +65,73 @@ public class CVE
                 int commitStartIndex = Math.max(url.lastIndexOf('/'), url.lastIndexOf('='));
                 String commit = url.substring(commitStartIndex + 1, url.length());
                 fieldMap.put(DB_COMMIT, commit);
+
+                // Who needs encryption?
+                // On a serious note, git.kernel.org for some reason does not work
+                // over https (java.net.SocketException: Connection reset)
+                if (url.startsWith("https://git.kernel.org")) {
+                    url = url.replace("https://", "http://");
+                }
                 
                 Http http = new Http();
                 String html = http.httpGet(url);
-                if (html != null && !html.equals("")) {
+
+                final boolean pageOk = html != null && !html.equals("");
+                if (pageOk) {
                     // Get parent commit id.
-                    int parentStartIndex = html.indexOf("parent");
-                    parentStartIndex += "parent".length();
-                    while (html.charAt(parentStartIndex) == '<') {
-                        int endOfTag = html.indexOf('>', parentStartIndex);
-                        parentStartIndex = endOfTag + 1;
-                    }
-                    int parentEndIndex = html.indexOf('<', parentStartIndex);
-                    String parentCommit = html.substring(parentStartIndex, parentEndIndex);
+                    String parentCommit = getParentCommit(url, html);
                     fieldMap.put(DB_PARENT_COMMIT, parentCommit);
 
                     // Get repo name
-                    // wordNo-th word in the title is the repo name
-                    final int wordNo = url.contains(RepoWebSite.GoogleSource) ? 2 : 0;
-
-                    String titleOpenTag = "<title>";
-                    String titleCloseTag = "</title>";
-                    final int titleStartIndex = html.indexOf(titleOpenTag);
-                    final int titleEndIndex = html.indexOf(titleCloseTag);
-                    String title = html.substring(titleStartIndex + titleOpenTag.length(), titleEndIndex);
-
-                    String[] titleWords = title.split("\\s+");
-                    assert titleWords.length >= wordNo;
-                    String repoName = titleWords[wordNo];
+                    String repoName = getRepoName(url, html);
                     fieldMap.put(DB_REPO_NAME, repoName);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private String getParentCommit(String url, String html) {
+        if (!html.contains("parent")) {
+            return "";
+        }
+
+        int parentStartIndex = html.indexOf("parent");
+        parentStartIndex += "parent".length();
+        while (html.charAt(parentStartIndex) == '<') {
+            int endOfTag = html.indexOf('>', parentStartIndex);
+            parentStartIndex = endOfTag + 1;
+        }
+        int parentEndIndex = html.indexOf('<', parentStartIndex);
+        String parentCommit = html.substring(parentStartIndex, parentEndIndex);
+
+        return parentCommit;
+    }
+
+    private String getRepoName(String url, String html) {
+        // wordNo-th word in the title is the repo name
+        int wordNo = 0;
+        if (url.contains(RepoWebSite.GoogleSource)) {
+            wordNo = 2;
+        }
+
+        String titleOpenTag = "<title>";
+        String titleCloseTag = "</title>";
+        final int titleStartIndex = html.indexOf(titleOpenTag);
+        final int titleEndIndex = html.indexOf(titleCloseTag);
+        String title = html.substring(titleStartIndex + titleOpenTag.length(), titleEndIndex);
+
+        String[] titleWords = title.split("\\s+");
+        assert titleWords.length >= wordNo;
+        String repoName = titleWords[wordNo];
+
+        // put "android/" in front of the repo name
+        if (url.contains(RepoWebSite.GoogleSource)) {
+            repoName = "android/" + repoName;
+        }
+
+        return repoName;
     }
     
     public void print() {
@@ -119,46 +153,9 @@ public class CVE
         if (originHead.contains("bug") || originHead.contains("reference")) return DB_BUG;
         if (originHead.contains("device")) return DB_DEVICE;
         if (originHead.contains("version")) return DB_VERSION;
-        if (originHead.contains("repo_name")) return DB_REPO_NAME;
         return "";
     }
 
     public static void main(String args[]) {
-        try {
-            String url = args[0];
-            Http http = new Http();
-            String html = http.httpGet(url);
-
-            System.out.println(url);
-
-            if (html != null && !html.equals("")) {
-                // Get parent commit id.
-                int parentStartIndex = html.indexOf("parent");
-                parentStartIndex += "parent".length();
-                while (html.charAt(parentStartIndex) == '<') {
-                    int endOfTag = html.indexOf('>', parentStartIndex);
-                    parentStartIndex = endOfTag + 1;
-                }
-                int parentEndIndex = html.indexOf('<', parentStartIndex);
-                String parentCommit = html.substring(parentStartIndex, parentEndIndex);
-
-                // Get repo name
-                // wordNo-th word in the title is the repo name
-                final int wordNo = url.contains(RepoWebSite.GoogleSource) ? 2 : 0;
-
-                String titleOpenTag = "<title>";
-                String titleCloseTag = "</title>";
-                final int titleStartIndex = html.indexOf(titleOpenTag);
-                final int titleEndIndex = html.indexOf(titleCloseTag);
-                String title = html.substring(titleStartIndex + titleOpenTag.length(), titleEndIndex);
-
-                String[] titleWords = title.split("\\s+");
-                assert titleWords.length >= wordNo;
-                String repoName = titleWords[wordNo];
-                System.out.println(repoName);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

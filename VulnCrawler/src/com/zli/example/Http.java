@@ -24,4 +24,9 @@ public class Http
         }
         return result.toString();
     }
+
+    public static void main(String[] args) {
+        Http http = new Http();
+        http.httpGet(args[0]);
+    }
 }
