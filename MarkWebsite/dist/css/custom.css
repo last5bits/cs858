@@ -1,0 +1,69 @@
+.footer {
+  text-align: center;
+  margin-top: 50px;
+  padding-top: 5px;
+  border-top: 1px solid #ccc;
+  margin-bottom: 5px;
+}
+
+.title {
+  text-align: center;
+  padding-top: 5px;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 25px;
+}
+
+.btn-fixed {
+  color: #777;
+  font-size: 20px;
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+}
+
+.btn-right {
+  float: right;
+  margin-left: 5px;
+}
+
+.content-line {
+  margin-top: 10px;
+}
+
+.content-label {
+  text-align: right;
+  font-weight: bold;
+}
+
+.marked {
+  color: #5cb85c;
+}
+
+.not-marked {
+  color: #d9534f;
+}
+
+.code-block {
+  height: 5px;
+}
+
+.code-block-plus {
+  color: #5cb85c;
+}
+
+.code-block-minus {
+  color: #d9534f;
+}
+
+.comment-item {
+  height: 150px;
+  width: 15%;
+}
+
+.btn-delete {
+  background:none!important;
+  border:none; 
+  padding:0!important;
+  font: inherit; 
+  cursor: pointer;
+}
