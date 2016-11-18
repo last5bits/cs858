@@ -23,7 +23,8 @@ $git_diff = "";
 if (!empty($result['repo_name']) and
       !empty($result['commit']) and
       !empty($result['parent_commit'])) {
-  $shell_command = "cd ../repo/".$result['repo_name']." ; git diff ".
+  $repo_name_refined = str_replace('/', '@', $result['repo_name']);
+  $shell_command = "cd ../repo/".$repo_name_refined." ; git diff ".
                     $result['parent_commit']." ".$result['commit'];
   exec($shell_command, $git_diff);
 }
