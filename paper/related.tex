@@ -9,10 +9,13 @@ Our approach of targeted search spaces is orthogonal to the one of Prophet.
 After a buffer overflow is confirmed by symbolic execution, BovInspector employs three strategies to fix an overflow: introduce an if-condition, change an API function (i.e., \texttt{strcpy} to \texttt{strncpy}) or expand the buffer.
 One of the limitations of BovInspector is its focus on only buffer overflows, while a search-based repair can target a more wide range of vulnerabilities.
 
-\textbf{Mining bug patterns.} There is prior work on manually or semi-automatically inspecting software to create bug patterns \cite{hanam2016discovering, kim2013automatic}.
+\textbf{Mining bug patterns.} There is prior work on manually or semi-automatically inspecting software to create bug patterns \cite{hanam2016discovering, kim2013automatic,ye2016empirical,li2006have}.
 For example, Hanam et al.~\cite{hanam2016discovering} created an approach to automatically cluster bug-fixing commits of JavaScript code; then, these clusters are manually inspected to construct a set of patterns that represent the most common types of bugs.
 Some of the found patterns can be used to construct search spaces for automatic repair tools; however, some are not specific enough for this purpose. 
 In another example, to create the PAR automatic repair tool~\cite{kim2013automatic}, the authors manually inspected a large corpus of human-written patches to devise a set of common bug-fixing patterns, and then used these patterns to implement an evolutionary program repair algorithm.
 Although close to our work, the PAR's patterns target a wider range of bugs other than only software vulnerabilities.
 We believe that more narrow search spaces should improve the effectiveness of automatic software repair.
 Li et al.~\cite{li2006have} do consider security vulnerabilities in a separate category when inspecting software bugs; the bugs are classified in terms of their root causes, impacts and software components but no concrete patterns, which could be used by automatic repair tools, are proposed.
+Ye et al.~\cite{ye2016empirical} study false positives and false negatives of static analysis tools in regard to detecting buffer overflows.
+Additionally, this paper studies fixes that developers employ to fix buffer overflows (e.g., adding boundary checks).
+While this work should be helpful in devising new search spaces to automatically fix buffer overflows, it does not study other types of vulnerabilities and does not focus on mobile systems.
