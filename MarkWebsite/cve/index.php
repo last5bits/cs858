@@ -34,8 +34,8 @@ $search_result = "";
 if (isset($_POST['search'])) {
   $search_subject = str_replace('"', '\"', $_POST['search_input']);
   $shell_command = "cd ../repo/".$repo_name_refined." ; git checkout ".
-                    $result['parent_commit']." ; grep -I -R '".
-                    $search_subject."'";
+                    $result['parent_commit']." ; grep -I -R \"".
+                    $search_subject."\"";
   $raw_result = "";
   exec($shell_command, $raw_result);
   $search_result = array();
