@@ -12,6 +12,7 @@ $stmt->execute();
 $result = $stmt->get_result()->fetch_assoc();
 $genprog_checked = $result['genprog'];
 $spr_checked = $result['spr'];
+$repo_name_refined = str_replace('/', '@', $result['repo_name']);
 
 $stmt = $conn->prepare("SELECT * FROM comment WHERE c_id = ?");
 $stmt->bind_param("i", $id);
@@ -23,7 +24,7 @@ $git_diff = "";
 if (!empty($result['repo_name']) and
       !empty($result['commit']) and
       !empty($result['parent_commit'])) {
-  $repo_name_refined = str_replace('/', '@', $result['repo_name']);
+
   $shell_command = "cd ../repo/".$repo_name_refined." ; git diff ".
                     $result['parent_commit']." ".$result['commit'];
   exec($shell_command, $git_diff);
@@ -32,8 +33,9 @@ if (!empty($result['repo_name']) and
 $search_result = "";
 if (isset($_POST['search'])) {
   $search_subject = str_replace('"', '\"', $_POST['search_input']);
-  $shell_command = "cd ../repo/ ; grep -I -R \""
-                    .$search_subject."\" ".$result['repo_name'];
+  $shell_command = "cd ../repo/".$repo_name_refined." ; git checkout ".
+                    $result['parent_commit']." ; grep -I -R '".
+                    $search_subject."'";
   $raw_result = "";
   exec($shell_command, $raw_result);
   $search_result = array();

@@ -83,16 +83,18 @@
         }
         else {
           foreach ($git_diff as $line) {
-            $line = str_replace("<", "&lt;", $line);
-            $line = str_replace(">", "&gt;", $line);
-            if ($line[0] == '-') {
-              echo "<div class=\"code-block code-block-minus\">".$line."</div><br />";
-            }
-            elseif ($line[0] == '+') {
-              echo "<div class=\"code-block code-block-plus\">".$line."</div><br />";
-            }
-            else {
-              echo "<div class=\"code-block\">".$line."</div><br />";
+            if (!empty($line)) {
+              $line = str_replace("<", "&lt;", $line);
+              $line = str_replace(">", "&gt;", $line);
+              if ($line[0] == '-') {
+                echo "<div class=\"code-block code-block-minus\">".$line."</div><br />";
+              }
+              elseif ($line[0] == '+') {
+                echo "<div class=\"code-block code-block-plus\">".$line."</div><br />";
+              }
+              else {
+                echo "<div class=\"code-block\">".$line."</div><br />";
+              }
             }
           }
         }
@@ -128,8 +130,10 @@
         else {
           echo "<div class=\"code-block\">Found Subject In Files:</div><br />";
           foreach ($search_result as $line) {
-            echo "<div class=\"code-block\"><a href=\"../repo/".$line."\">"
+            if (!empty($line)) {
+              echo "<div class=\"code-block\"><a href=\"../repo/".$line."\">"
                   .$line."</a></div><br />";
+            }
           }
         }
       ?>
