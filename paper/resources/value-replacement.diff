@@ -1,0 +1,8 @@
+        RETURN_FALSE;
+}
+
+- htmlNodeDumpFormatOutput(buf, docp, node, 0, fmt);
++ xmlNodeDump(buf, docp, node, 0, fmt);
+mem = (xmlChar*) xmlBufferContent(buf);
+if (!mem) {
+        RETVAL_FALSE;

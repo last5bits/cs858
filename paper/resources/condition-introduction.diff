@@ -1,0 +1,7 @@
+ }
+else
+ {
++ if (!(crop->img_mode == 0))
+     if (...) {
+         TIFFError("computeInputPixelOffsets", ...);
+         TIFFError("computeInputPixelOffsets", ...);

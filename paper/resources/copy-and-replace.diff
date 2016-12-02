@@ -1,0 +1,6 @@
+int i;
+
++ (json_globals.error_code) = PHP_JSON_ERROR_UTF8;
+if (options & PHP_JSON_PRETTY_PRINT) {
+    for (i = 0; i < JSON_G(encoder_depth); ++i) {
+        smart_str_appendl(buf, "    ", 4);

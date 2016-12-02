@@ -1,0 +1,6 @@
+if (Z_LVAL_P(dim) < 0 || ... ) {
++   if ((type != 0))
++       return;
+    zend_error( ... );
+    Z_STRVAL_P(ptr) = STR_EMPTY_ALLOC();
+    Z_STRLEN_P(ptr) = 0;

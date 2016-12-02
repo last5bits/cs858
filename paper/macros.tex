@@ -1,4 +1,27 @@
 \newcommand\todo[1]{\textcolor{red}{TODO: #1}}
+\newcommand{\GV}{G\&V\xspace}
+
+\lstdefinelanguage{diff}{
+  morecomment=[f][\color{blue}]{@@},     % group identifier
+  morecomment=[f][\color{red}]-,         % deleted lines 
+  morecomment=[f][\color{green}]+,       % added lines
+  morecomment=[f][\color{magenta}]{---}, % Diff header lines (must appear after +,-)
+  morecomment=[f][\color{magenta}]{+++},
+}
+
+\lstset{
+   escapeinside={<@}{@>}, 
+    language={C},
+    basicstyle=\ttfamily\scriptsize,%\ttfamily\tiny,
+  commentstyle=\bfseries,
+    numbers=left,
+    numbersep=5pt,
+    frame=line,
+    xleftmargin=1.5em, 
+    moredelim=[l][\bfseries\textcolor{red}]{-}, 
+    moredelim=[l][\bfseries\textcolor{blue}]{+}, 
+    %morecomment=[is]{/*}{*/},
+}
 
 \newenvironment{nscenter}
  {\parskip=0pt\par\nopagebreak\centering}

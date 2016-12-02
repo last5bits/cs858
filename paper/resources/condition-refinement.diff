@@ -1,0 +1,7 @@
+chunk *c;
+
+- if (len == 0)
++ if ((len == 0) || (len == 3))
+    return 0;
+
+c = chunkpool_get_unused_chunk();
