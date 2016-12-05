@@ -131,7 +131,7 @@
           echo "<div class=\"code-block\">Found Subject In Files:</div><br />";
           foreach ($search_result as $line) {
             if (!empty($line)) {
-              echo "<div class=\"code-block\"><a href=\"../repo/".$line."\">"
+              echo "<div class=\"code-block\"><a href=\"../repo/".$repo_name_refined."/".$line."\">"
                   .$line."</a></div><br />";
             }
           }
