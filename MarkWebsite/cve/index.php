@@ -30,11 +30,15 @@ if (!empty($result['repo_name']) and
   exec($shell_command, $git_diff);
 }
 
+//grep:
+//-I: skip binary files
+//-F: no regular experessions in the input (e.g., "*" is literally a star)
+//-R: recursively
 $search_result = "";
 if (isset($_POST['search'])) {
   $search_subject = str_replace('"', '\"', $_POST['search_input']);
   $shell_command = "cd ../repo/".$repo_name_refined." ; git checkout ".
-                    $result['parent_commit']." ; grep -I -R \"".
+                    $result['parent_commit']." ; grep -I -F -R \"".
                     $search_subject."\"";
   $raw_result = "";
   exec($shell_command, $raw_result);
