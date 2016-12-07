@@ -30,6 +30,12 @@ if (!empty($result['repo_name']) and
   exec($shell_command, $git_diff);
 }
 
+function console_log( $data ){
+	  echo '<script>';
+	    echo 'console.log('. json_encode( $data ) .')';
+	    echo '</script>';
+}
+
 //grep:
 //-I: skip binary files
 //-F: no regular experessions in the input (e.g., "*" is literally a star)
@@ -37,11 +43,15 @@ if (!empty($result['repo_name']) and
 $search_result = "";
 if (isset($_POST['search'])) {
   $search_subject = str_replace('"', '\"', $_POST['search_input']);
-  $shell_command = "cd ../repo/".$repo_name_refined." ; git checkout ".
-                    $result['parent_commit']." ; grep -I -F -R \"".
-                    $search_subject."\"";
+
+  $cd_command = "cd ../repo/".$repo_name_refined;
+  $checkout_command = $cd_command."; git checkout ".$result['parent_commit']."";
+  exec($checkout_command);
+
   $raw_result = "";
-  exec($shell_command, $raw_result);
+  $grep_command = $cd_command."; grep -I -F -R \"".$search_subject."\"";
+  exec($grep_command, $raw_result);
+
   $search_result = array();
   foreach ($raw_result as $record) {
     $file_name = explode(":", $record)[0];
