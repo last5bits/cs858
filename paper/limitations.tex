@@ -1,9 +1,17 @@
-\section{Limitations}
+\section{Limitations \& Threats to validity}
 
-The concept of search space is relevant only to search-based automatic repair tools (e.g., SPR~\cite{long2015staged}, Prophet~\cite{long2015prophet} or GenProg~\cite{le2012systematic}). The research community works on other approaches as well; for example, \emph{semantic-based} automatic repair (DirectFix~\cite{directfix}, Angelix~\cite{mechtaev2016angelix}), in which a repair produced by employing symbolic execution and constraint solving.
+The concept of search space is relevant only to search-based automatic repair tools (e.g., SPR~\cite{long2015staged}, Prophet~\cite{long2015prophet} or GenProg~\cite{le2012systematic}).
+The research community works on other approaches as well; for example, \emph{semantic-based} automatic repair (DirectFix~\cite{directfix}, Angelix~\cite{mechtaev2016angelix}), in which a repair produced by employing symbolic execution and constraint solving.
 
 % Some patches may contain code unrelated to the vulnerability
-% Ask Song
+Previous research shows that a portion of developer commits contains changes that are irrelevant to the target bug (e.g., quick refactoring).
+Ngueyen et al~\cite{nguyen2013filtering} reported that 11~--~39\% of bug-fixing commits contain irrelevant changes and we believe that for vulnerability-fixing commits this number should be similar.
+To mitigate this issue, a more rigorous empirical study should be conducted, in which every vulnerability is precisely examined and relevant changes are manually distinguished from irrelevant ones; we leave this as future work.
 
 % Human bias in the empirical study
-Since the empirical study is performed by the authors manually, there is a risk of human bias. We mitigated this risk by following a specific procedure when deciding whether a particular patch can be repaired by a tool.
+Since the empirical study is performed by the authors manually, there is a risk of human bias.
+We mitigated this risk by following a specific procedure when deciding whether a particular patch can be repaired by a tool.
+
+% Limited number of vulnerabilities
+The results of our study might not generalize to all the vulnerabilities or all the mobile software systems due to the empirical nature of the study.
+We mitigate this by examining a large number of vulnerabilities (434).
