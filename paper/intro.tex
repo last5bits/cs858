@@ -4,11 +4,11 @@
 In the world of countless software bugs and limited resources to fix them, automatic software repair tools are a desirable instrument that can decrease the developers' workload.
 Current automatic repair tools aim at fixing simpler bugs and thus give developers a chance to concentrate on more sophisticated bugs.
 In addition, developers' time is highly valuable from the economic point of view; thus, automatic repair tools should significantly decrease the expenses  associated with software maintenance.
-Ideally, the process of bug-fixing should be automated: an automatic repair tool receives a buggy program and outputs the fix for this bug.
+Ideally, the process of bug-fixing should be automated: an automatic repair tool receives a buggy program and outputs a fix for this bug.
 
 % Why vulnerabilities are bad for you
-One of the important subsets of all the bugs is software vulnerabilities, as they can lead to substantial financial losses and great customers' dissatisfaction; among the most notorious examples are Slammer and Morris worms~\cite{moore2003inside, streak2003morris}.
-Moreover, software vulnerabilities of mobile phones are of a particular importance due to the ubiquity of mobile apps and a great amount of private data on mobile phones, which is often undervalued~\cite{egelman2014you}.
+One of the most important subsets of all bugs is software vulnerabilities, as they can lead to substantial financial losses and great customers' dissatisfaction; among the most notorious examples are Slammer and Morris worms~\cite{moore2003inside, streak2003morris}.
+In addition, software vulnerabilities on mobile phones are of a particular importance due to the ubiquity of mobile apps and a great amount of private data on mobile phones, which is often undervalued~\cite{egelman2014you}.
 
 % G&V automatic repair
 Several automatic software repair tools were proposed~\cite{le2012systematic, long2015staged, mechtaev2016angelix} that are able to fix some subsets of bugs (including software vulnerabilities).
@@ -16,12 +16,12 @@ One of the most common approaches is the co-called Generate-and-validate (\GV) a
 Otherwise, the tool picks the next fix and runs the tests again.
 
 % The problem of overfitted patches
-Along with the test cases that expose the bug, a \GV tool also accepts the test cases that verify the existing functionality of the program that are needed to avoid regressions.
+Along with the test cases that expose the bug, a \GV tool also accepts the test cases that verify the existing functionality to avoid regressions.
 The imperfection of a test suite can lead to \emph{overfitted} patches---patches that make all the test cases pass but nonetheless are incorrect.
 Analogically to the concept of overfitness in machine learning, where classifiers may be overfitted to training data and perform poorly on new instances, these incorrect patches overfit existing test suites, but newly added test cases can expose defects in these patches.
 For example, consider a bug that is exposed through a test case; however, there is no test case that would verify the \emph{functionality}, in which the bug resides.
 The simplest patch would just remove the functionality altogether and thus would make all the test cases pass.
-Obviously, this patch would be incorrect and would not be accepted by the developer.
+Obviously, such a patch is incorrect and would not be accepted by the developer.
 
 % Our solution to the problem
 Along with the mentioned problem of poor test suites, there is the problem of poor search spaces: if a search space does not contain a correct patch, then it will never be found.
