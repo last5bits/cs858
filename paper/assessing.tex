@@ -6,13 +6,11 @@ In this section, we describe the empirical study, in which we manually examined 
 
 % Purpose
 During this empirical study, we aimed to answer the following research question: how effective are the search spaces of GenProg and SPR in fixing Android vulnerabilities?
-To answer it, we manually examined developer fixes for \numvuln previously mined vulnerabilities, and for each we made a decision whether a developer fix is in the search space of a particular tool.
+To answer it, we manually examined developer fixes for \numvuln previously mined vulnerabilities, and for each we made a decision whether the developer fix is in the search space of a particular tool.
 
 % Search spaces
-Section~\ref{section:background} provides information on how GenProg and SPR search spaces are structured;
-\todo{genprog quirks}
-\todo{challenges}
-\todo{mention SPR limitation (copy and replace)}
+Section~\ref{section:background} provides information on how GenProg and SPR search spaces are structured; to conduct such an empirical study, a precise understanding of the GenProg and SPR search spaces is needed (e.g., what are the ingredients for GenProg? What types of variables can be used by SPR?).
+We admit a limitation of our study in regard to one of the SPR transformations (cf. Section~\ref{section:limitations}).
 
 % website
 To facilitate the process of manual examination, we created a service in the form of a website that allows to go through all the vulnerabilities and make a decision for each.
