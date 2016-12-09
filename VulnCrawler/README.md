@@ -1,5 +1,5 @@
 # Vulnerability Crawler
-This is a crawler program written in Java that parses the information about security vulnerabilities in [Android](http://source.android.com/security/bulletin/) and corresponding commit information in [Google Source](https://android.googlesource.com/) or [CodeAurora](https://source.codeaurora.org/), and puts it into a MySQL database for ease of use.
+This is a crawler program written in Java that parses the information about security vulnerabilities in [Android](http://source.android.com/security/bulletin/) and corresponding commit information in [Google Source](https://android.googlesource.com/) or [CodeAurora](https://source.codeaurora.org/), and puts it into a MySQL database for ease of use. Courtesy of Zijin Li (z542li at uwaterloo dot ca).
 
 ## Setting Up the Program
 1. Import the project to your Java IDE, e.g. [Eclipse](https://eclipse.org/).
