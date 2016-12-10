@@ -40,6 +40,7 @@ function console_log( $data ){
 //-I: skip binary files
 //-F: no regular experessions in the input (e.g., "*" is literally a star)
 //-R: recursively
+//--exclude-dir: exclude a directory from the search
 $search_result = "";
 if (isset($_POST['search'])) {
   $search_subject = str_replace('"', '\"', $_POST['search_input']);
@@ -49,7 +50,7 @@ if (isset($_POST['search'])) {
   exec($checkout_command);
 
   $raw_result = "";
-  $grep_command = $cd_command."; grep -I -F -R \"".$search_subject."\"";
+  $grep_command = $cd_command."; grep -I -F -R --exclude-dir=\".git\" \"".$search_subject."\"";
   exec($grep_command, $raw_result);
 
   $search_result = array();
