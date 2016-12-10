@@ -15,7 +15,7 @@ For both the empirical study that assess the effectiveness of previous automatic
     \item Miscellaneous: date, severity, etc.
 \end{itemize}
 
-%Patch is the most essential part as it is required for verifying whether a patch is the search space of previous techniques and for obtaining a better understanding of vulnerability fixes. A vulnerability type is later used to 
+%Patch is the most essential part as it is required for verifying whether a patch is the search space of previous techniques and for obtaining a better understanding of vulnerability fixes. A vulnerability type is later used to
 
 % Where's from
 The required data was obtained from the Android Security Bulletins (ASB) website\footnote{http://source.android.com/security/bulletin/}, which is the official website that lists security vulnerabilities on Android, their description and links to corresponding software repositories that contain fixes.
@@ -32,11 +32,12 @@ We mined all the data the ASB website contained at the time of running the progr
 The most recent vulnerabilities do not have a corresponding link to the developer patch (as we suspect, due to security reasons). After removing such entries, \numvuln vulnerabilities remained, with publishing date ranging from August 2015 to August 2016.
 
 % Severity, types, languages
-The vulnerabilities obtained span several programming languages: C, C++ and Java. As Fig.~\ref{figure:severity} depicts, most of them either of a critical or a high severity. Fig.~\ref{} presents the vulnerability types. \todo{}
+The vulnerabilities obtained span several programming languages: C, C++ and Java. As Fig.~\ref{figure:severity} depicts, most of them either of a critical or a high severity. Fig.~\ref{figure:vuln-types} presents the vulnerability types; privilege escalations are the most common vulnerability type among all the vulnerabilities obtained.
 
 \begin{figure}
     \begin{tikzpicture}
         \begin{axis}[
+            ylabel={\# of vulnerabilities},
             symbolic x coords={Critical, High, Moderate, Low},
             xtick=data,
             height=3cm,
@@ -52,5 +53,63 @@ The vulnerabilities obtained span several programming languages: C, C++ and Java
     \end{tikzpicture}
     \small \caption{Distribution of vulnerabilities by severity}
         \label{figure:severity}
+    %\vspace{-0.2in}
+\end{figure}
+
+%Elevation 230
+%Denial 35
+%Remote 69
+%Information 63
+%Other 37
+\begin{figure}
+    \begin{tikzpicture}
+    \begin{axis}[
+        xbar, xmin=0,
+        xlabel={\# of vulnerabilities},
+        symbolic y coords={
+            {Elevation of priv.},
+            {Denial of service},
+            {Remote code exec.},
+            {Inform. disclosure},
+            Other
+        },
+        ytick=data,
+        %y tick label style={rotate=30},
+        nodes near coords,
+        nodes near coords align={horizontal},
+        height=4cm,
+        width=\linewidth*.8,
+    ]
+    \addplot coordinates {
+        (230,{Elevation of priv.})
+        (35,{Denial of service})
+        (69,{Remote code exec.})
+        (63,{Inform. disclosure})
+        (37,Other)};
+    \end{axis}
+    \end{tikzpicture}
+    \small \caption{Distribution of vulnerabilities by type}
+        \label{figure:vuln-types}
     \vspace{-0.2in}
+
+    %\begin{tikzpicture}
+        %\begin{axis}[
+            %symbolic y coords={Elevation of privileges, Denial of service, Remote code execution, Information disclosure, Other},
+            %ytick=data,
+            %height=3cm,
+            %width=\linewidth,
+            %%x tick label style={rotate=90} % <-- this is added
+          %]
+            %\addplot[fill=blue] coordinates {
+                %(230, Elevation of privileges)
+                %(35, Denial of service)
+                %(69, Remote code execution)
+                %(63, Information disclosure)
+                %(37, Other)
+            %};
+        %\end{axis}
+    %\end{tikzpicture}
+    %\small \caption{Distribution of vulnerabilities by type}
+        %\label{figure:vuln-types}
+    %\vspace{-0.2in}
 \end{figure}
