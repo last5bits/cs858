@@ -176,6 +176,39 @@
       </button>
     </div>
   </form>
+  <?php if ($result['marked']): ?>
+    <br />
+    <form method="post">
+      <p>This CVE is marked.</p>
+      <button class="btn btn-primary" type="submit" name="unmark">
+        Unmark
+      </button>
+    </form>
+  <?php else: ?>
+    <br />
+    <p>This CVE is not marked.</p>
+    <button class="btn btn-primary" disabled="true">
+      Unmark
+    </button>
+  <?php endif; ?>
+  <br />
+  <?php if ($result['ignored']): ?>
+    <br />
+    <form method="post">
+      <p>This CVE is ignored.</p>
+      <button class="btn btn-primary" type="submit" name="unignore">
+        Unignore
+      </button>
+    </form>
+  <?php else: ?>
+    <br />
+    <form method="post">
+      <p>This CVE is not ignored.</p>
+      <button class="btn btn-primary" type="submit" name="ignore">
+        Ignore
+      </button>
+    </form>
+  <?php endif; ?>
 </div>
 <br />
 <div class="row">

@@ -84,6 +84,46 @@ if (isset($_POST['mark'])) {
   $genprog = $genprog_checked;
   $spr = $spr_checked;
   $stmt->execute();
+  
+  $result['marked'] = 1;
+}
+
+if (isset($_POST['unmark'])) {
+  $stmt = $conn->prepare("
+    UPDATE cve
+    SET genprog = 0, spr = 0, marked = 0
+    WHERE id = ?");
+  $stmt->bind_param("i", $id);
+  $id = $_GET['cid'];
+  $stmt->execute();
+  
+  $result['marked'] = 0;
+  $genprog_checked = 0;
+  $spr_checked = 0;
+}
+
+if (isset($_POST['ignore'])) {
+  $stmt = $conn->prepare("
+    UPDATE cve
+    SET ignored = 1
+    WHERE id = ?");
+  $stmt->bind_param("i", $id);
+  $id = $_GET['cid'];
+  $stmt->execute();
+  
+  $result['ignored'] = 1;
+}
+
+if (isset($_POST['unignore'])) {
+  $stmt = $conn->prepare("
+    UPDATE cve
+    SET ignored = 0
+    WHERE id = ?");
+  $stmt->bind_param("i", $id);
+  $id = $_GET['cid'];
+  $stmt->execute();
+  
+  $result['ignored'] = 0;
 }
 
 if (isset($_POST['comment'])) {
