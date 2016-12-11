@@ -34,7 +34,12 @@ def iterate_patches():
     """
     connection = pymysql.connect(host=host, port=port, user=user, passwd=passwd, db=db)
     cursor = connection.cursor()
-    cursor.execute('select repo_name, parent_commit, commit from cve where repo_name <> "" and parent_commit <> "" and commit <> "" and ignored <> 1 and id = 2509');
+    # can be fixed by neither
+    # cursor.execute('select repo_name, parent_commit, commit from cve where ignored <> 1 and genprog = 0 and spr = 0');
+    # can be fixed by GenProg
+    # cursor.execute('select repo_name, parent_commit, commit from cve where ignored <> 1 and genprog = 1');
+    # can be fixed by SPR
+    cursor.execute('select repo_name, parent_commit, commit from cve where ignored <> 1 and spr = 1');
 
     res = list(cursor);
 
@@ -84,6 +89,9 @@ def get_stats(repo, parent_commit, commit):
 
 if __name__ == "__main__":
     with open(output_file_path, "w") as output_file:
+        count = 1
         for patch in iterate_patches():
             (num_files, num_added, num_deleted) = get_stats(patch[0], patch[1], patch[2])
             print("%s;%s;%s" % (num_files, num_added, num_deleted), file=output_file)
+            print(count)
+            count += 1
