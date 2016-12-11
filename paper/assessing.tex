@@ -56,17 +56,116 @@ These materials should be helpful not only for the purposes of reproducing our s
 
 \subsection{Results of assessing the search spaces}
 
+% Numbers
 Figure~\ref{figure:venn} presents the numbers of correct patches inside GenProg and SPR search space in the form of a Venn diagram: out of total 430 vulnerabilities, 46 can be potentially fixed only by GenProg, 11 only by SPR and 13 can be fixed by the both tools.
+Majority of vulnerabilities (360) cannot be fixed by current automatic repair tools.
+Note, that a higher number of correct patches in GenProg's search space does not necessarily imply a higher number of correctly produced repairs. Previous work shows that SPR's search space is more targeted and has a higher probability of producing a correct patch~\ref{long2015staged}.
 
 \begin{figure}
     \centering
     \includegraphics[width=5cm]{venn}
     \vspace{0.1in}
     \caption{Comparison between GenProg and SPR in terms of numbers of correct patches inside their search spaces}
-    \vspace{-0.2in}
     \label{figure:venn}
 \end{figure}
 
-Note, that a higher number of correct patches in GenProg's search space does not necessarily imply a higher number of correctly produced repairs. Previous work shows that SPR's search space is more targeted and has a higher probability of producing a correct patch~\ref{long2015staged}.
+The reason behind such a low number of correct patches in the GenProg and SPR search spaces is a relative complexity of developer patches. Often, they involve more complex code changes than e.g. a simple condition refinement; thus, SPR's search space often lacks a correct patch. In the case of GenProg, programs under examination often lacked ``fix ingredients''. In Figure~\ref{figure:boxplots}, we show a comparison between complexities of patches that can be fixed by GenProg, SPR and the ones that can be fixed by neither (we removed several outliers with a number of added / deleted lines greater than 100). Patches that cannot be fixed automatically are more complex both in terms of number of added and deleted lines.
 
+\begin{figure}
+
+\begin{subfigure}[b]{.48\linewidth}
+\centering
+\begin{tikzpicture}
+  \begin{axis}
+    [
+        boxplot/draw direction=y,
+        height=7cm,
+        width=\linewidth,
+        xtick={1, 2, 3},
+        xticklabels={GP, SPR, None},
+    ]
+    \addplot+[
+    boxplot prepared={
+      median=3,
+      upper quartile=6,
+      lower quartile=1,
+      upper whisker=24,
+      lower whisker=0
+    },
+    ] coordinates {};
+    \addplot+[
+    boxplot prepared={
+      median=2,
+      upper quartile=4,
+      lower quartile=1,
+      upper whisker=21,
+      lower whisker=1
+    },
+    ] coordinates {};
+    \addplot+[
+    boxplot prepared={
+      median=10,
+      upper quartile=23,
+      lower quartile=3,
+      upper whisker=93,
+      lower whisker=1
+    },
+    ] coordinates {};
+  \end{axis}
+\end{tikzpicture}
+\caption{\# of added lines}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{.48\linewidth}
+\centering
+\begin{tikzpicture}
+  \begin{axis}
+    [
+        boxplot/draw direction=y,
+        height=7cm,
+        width=\linewidth,
+        xtick={1, 2, 3},
+        xticklabels={GP, SPR, None},
+    ]
+    \addplot+[
+    boxplot prepared={
+      median=1,
+      upper quartile=2.25,
+      lower quartile=0,
+      upper whisker=50,
+      lower whisker=0
+    },
+    ] coordinates {};
+    \addplot+[
+    boxplot prepared={
+      median=1,
+      upper quartile=1,
+      lower quartile=0,
+      upper whisker=5,
+      lower whisker=0
+    },
+    ] coordinates {};
+    \addplot+[
+    boxplot prepared={
+      median=2,
+      upper quartile=6,
+      lower quartile=1,
+      upper whisker=79,
+      lower whisker=0
+    },
+    ] coordinates {};
+  \end{axis}
+\end{tikzpicture}
+\caption{\# of deleted lines}
+\end{subfigure}
+
+\caption{Patch complexities of correct patches of GenProg (GP), SPR and patches that cannot be fixed automatically}
+\label{figure:boxplots}
+\vspace{-0.2in}
+\end{figure}
+
+% Types
+%Figure~\ref{} shows the types of vulnerabilities that can be fixed by GenProg and SPR.
+
+% Open access
 We give open access to the SQL database with the results of this empirical study\footnote{host: lt-pc1.uwaterloo.ca; DB name: cs858; user/pw: guest/guest}.
