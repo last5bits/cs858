@@ -39,7 +39,11 @@ def iterate_patches():
     # can be fixed by GenProg
     # cursor.execute('select repo_name, parent_commit, commit from cve where ignored <> 1 and genprog = 1');
     # can be fixed by SPR
-    cursor.execute('select repo_name, parent_commit, commit from cve where ignored <> 1 and spr = 1');
+    # cursor.execute('select repo_name, parent_commit, commit from cve where ignored <> 1 and spr = 1');
+    # have comments
+    # cursor.execute('select cve.id, cve.v_id from cve inner join comment on cve.id = comment.c_id where cve.ignored = 0;');
+    # can be fixed by SPR for URLS
+    cursor.execute('select cve.id, cve.v_id from cve where cve.ignored = 0 and cve.spr = 1;');
 
     res = list(cursor);
 
@@ -90,8 +94,13 @@ def get_stats(repo, parent_commit, commit):
 if __name__ == "__main__":
     with open(output_file_path, "w") as output_file:
         count = 1
-        for patch in iterate_patches():
-            (num_files, num_added, num_deleted) = get_stats(patch[0], patch[1], patch[2])
-            print("%s;%s;%s" % (num_files, num_added, num_deleted), file=output_file)
-            print(count)
+        # for patch in iterate_patches():
+            # (num_files, num_added, num_deleted) = get_stats(patch[0], patch[1], patch[2])
+            # print("%s;%s;%s" % (num_files, num_added, num_deleted), file=output_file)
+            # print(count)
+            # count += 1
+
+        # generate URLs for CVEs with comments
+        for row in iterate_patches():
+            print("http://lt-pc1.uwaterloo.ca/mark-cs858/cve/?vid=%s&cid=%s" % (row[1], row[0]), file=output_file)
             count += 1
