@@ -22,7 +22,7 @@ After the decision is made, corresponding check-marks are manually set and the d
 
 % release
 We release the source code and deployment instructions for the presented service\footnote{https://github.com/last5bits/cs858/tree/master/MarkWebsite}.
-These materials should be helpful not only for the purposes of reproducing our study, but also for conducting similar studies or extending the current one.
+These materials should be helpful not only for the purposes of reproducing our study, but also for conducting similar studies or extending the current one. Additionally, we provide read-only access to the website that was used by the authors during the assessment\footnote{http://lt-pc1.uwaterloo.ca/mark-cs858}.
 
 \begin{figure}[t!]
 
@@ -59,7 +59,7 @@ These materials should be helpful not only for the purposes of reproducing our s
 % Numbers
 Figure~\ref{figure:venn} presents the numbers of correct patches inside GenProg and SPR search space in the form of a Venn diagram: out of total 430 vulnerabilities, 46 can be potentially fixed only by GenProg, 11 only by SPR and 13 can be fixed by the both tools.
 Majority of vulnerabilities (360) cannot be fixed by current automatic repair tools.
-Note, that a higher number of correct patches in GenProg's search space does not necessarily imply a higher number of correctly produced repairs. Previous work shows that SPR's search space is more targeted and has a higher probability of producing a correct patch~\ref{long2015staged}.
+Note, that a higher number of correct patches in GenProg's search space does not necessarily imply a higher number of correctly produced repairs. Previous work shows that SPR's search space is more targeted and has a higher probability of producing a correct patch~\cite{long2015staged}.
 
 \begin{figure}
     \centering
@@ -69,7 +69,7 @@ Note, that a higher number of correct patches in GenProg's search space does not
     \label{figure:venn}
 \end{figure}
 
-The reason behind such a low number of correct patches in the GenProg and SPR search spaces is a relative complexity of developer patches. Often, they involve more complex code changes than e.g. a simple condition refinement; thus, SPR's search space often lacks a correct patch. In the case of GenProg, programs under examination often lacked ``fix ingredients''. In Figure~\ref{figure:boxplots}, we show a comparison between complexities of patches that can be fixed by GenProg, SPR and the ones that can be fixed by neither (we removed several outliers with a number of added / deleted lines greater than 100). Patches that cannot be fixed automatically are more complex both in terms of number of added and deleted lines.
+The reason behind such a low number of correct patches in the GenProg and SPR search spaces is a relative complexity of developer patches. Often, they involve more complex code changes than e.g. a simple condition refinement; thus, SPR's search space often lacks a correct patch. In the case of GenProg, programs under examination often lacked ``fix ingredients''. In Figure~\ref{figure:boxplots}, we show a comparison between complexities of patches that can be fixed by GenProg, SPR and the ones that can be fixed by neither (we removed several outliers with a number of added / deleted lines greater than 100). Patches that cannot be fixed automatically are more complex both in terms of numbers of added and deleted lines.
 
 \begin{figure}
 
@@ -165,7 +165,40 @@ The reason behind such a low number of correct patches in the GenProg and SPR se
 \end{figure}
 
 % Types
-%Figure~\ref{} shows the types of vulnerabilities that can be fixed by GenProg and SPR.
+Figure~\ref{figure:transforms} shows the distribution of SPR transformations among the correct patches inside SPR search space. Transformations of the type ``insert initialization'' prevail over all the other types.
+Note: we assume that deletions of functionality can be fixed by a condition introduction of the form \texttt{if (0) { ... }}.
+
+\begin{figure}
+    \begin{tikzpicture}
+    \begin{axis}[
+        xbar, xmin=0,
+        xlabel={\# of patches},
+        symbolic y coords={
+            {CR},
+            {CI},
+            {CCFI},
+            {II},
+            VR
+        },
+        ytick=data,
+        %y tick label style={rotate=30},
+        nodes near coords,
+        nodes near coords align={horizontal},
+        height=4.5cm,
+        width=\linewidth*.8,
+    ]
+    \addplot[fill=blue] coordinates {
+        (6,{CR})
+        (2,{CI})
+        (5,{CCFI})
+        (9,{II})
+        (2,VR)};
+    \end{axis}
+    \end{tikzpicture}
+    \small \caption{Distribution of transformations employed in correct SPR patches. CR is Condition Refinement, CI is Condition Introduction, CCFI is Conditional Control Flow Introduction, II is Insert Initialization, VR is Value Replacement}
+        \label{figure:transforms}
+    \vspace{-0.2in}
+\end{figure}
 
 % Open access
 We give open access to the SQL database with the results of this empirical study\footnote{host: lt-pc1.uwaterloo.ca; DB name: cs858; user/pw: guest/guest}.
