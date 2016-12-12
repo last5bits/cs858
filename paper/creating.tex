@@ -12,6 +12,8 @@ When creating new search spaces for automatic software repair tools, one should 
 
 With the aforementioned extensions, SPR can potentially fix 20 more vulnerabilities compared to the vanilla version of SPR; Figure~\ref{figure:transforms-new} shows a breakdown by each transformation category.
 
+We chose to extend SPR's search space rather than GenProg's due to significantly better results of SPR in terms of number of bugs fixed~\cite{long2015staged} and many of GenProg patches being degenerate functionality deletions in practice~\cite{qi2015analysis}.
+
 \begin{figure}
 
 \lstinputlisting[language=diff]{resources/new-ccfi.diff}
