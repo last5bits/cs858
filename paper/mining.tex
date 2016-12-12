@@ -23,17 +23,17 @@ The required data was obtained from the Android Security Bulletins (ASB) website
 
 % How we obtained it
 % Manual refinement
-We created a program-crawler to parse the ASB website and organize it in a database for further use. The source code of the crawler is released\footnote{https://github.com/last5bits/cs858/tree/master/VulnCrawler}. Due to imperfections of the implementation and format inconsistencies of the website, we manually refined the data by fixing some of the fields in the database (minor changes: amount of work is approximately 0.5 person-hours).
+We created a program-crawler to parse the ASB website and organize it in a database for further use. The source code of the crawler is released\footnote{https://github.com/last5bits/cs858/tree/master/VulnCrawler}. Due to imperfections of the implementation and format inconsistencies of the website, we manually refined the data by fixing some of the fields in the database (minor changes: the amount of work is approximately 0.5 person-hours).
 
 \subsection{Data description}
 
-We mined all the data the ASB website contained at the time of running the program-crawler: 636 CVEs (the Common Vulnerability and Exposures identifications) that correspond to 251 Android vulnerabilities (the ASB website is structured in such a way that one ``vulnerability'' can correspond to multiple CVEs). Developer patches correspond to CVEs rather then ``vulnerabilities'' (using the ASB terminology); due to that, during the subsequent manual examination, we consider each CVE patch as an atomic unit (rather than collection of all the CVE patches for a particular vulnerability). Later in the paper, we use the terms ``CVE'' and ``vulnerability'' interchangeably. %we use the term ``vulnerability'' to imply ``CVE''.
+We mined all the data the ASB website contained at the time of running the program-crawler: 636 CVEs (the Common Vulnerability and Exposures identifications) that correspond to 251 Android vulnerabilities (the ASB website is structured in such a way that one ``vulnerability'' can correspond to multiple CVEs). Developer patches correspond to CVEs rather than ``vulnerabilities'' (using the ASB terminology); due to that, during the subsequent manual examination, we consider each CVE patch as an atomic unit (rather than a collection of all the CVE patches for a particular vulnerability). Later in the paper, we use the terms ``CVE'' and ``vulnerability'' interchangeably. %we use the term ``vulnerability'' to imply ``CVE''.
 
 % No code
 The most recent vulnerabilities do not have a corresponding link to the developer patch (as we suspect, due to security reasons). After removing such entries, 434 vulnerabilities remained, with publishing date ranging from August 2015 to August 2016. Afterwards, we prune out vulnerabilities, patches for which do not change the source code (e.g., configuration changes); after this step, \numvuln vulnerabilities remained.
 
 % Severity, types, languages
-The vulnerabilities obtained span several programming languages: C, C++ and Java. As Fig.~\ref{figure:severity} depicts, most of them either of a critical or a high severity. Fig.~\ref{figure:vuln-types} presents the vulnerability types; privilege escalations are the most common vulnerability type among all the vulnerabilities obtained.
+The vulnerabilities obtained span several programming languages: C, C++ and Java. As Figure~\ref{figure:severity} depicts, most of them either of a critical or a high severity. Figure~\ref{figure:vuln-types} presents the vulnerability types; privilege escalations are the most common vulnerability type among all the vulnerabilities obtained.
 
 \begin{figure}
     \begin{tikzpicture}

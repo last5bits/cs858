@@ -5,9 +5,9 @@ In this section, we provide the background information on automatic software rep
 
 \subsection{Automatic software repair}
 
-The term "automatic software repair" covers many different approaches which accept a buggy program as an input and produce a fix for the target bug as an output.
+The term ``automatic software repair'' covers many different approaches which accept a buggy program as an input and produce a fix for the target bug as an output.
 In this section, we will focus only on \GV automatic repair (e.g., GenProg~\cite{le2012systematic}, SPR~\cite{long2015staged}, Prophet~\cite{long2015prophet}); we will be using the terms \GV automatic repair and automatic repair interchangeably.
-The typical workflow of a \GV automatic repair tool is depicted in the Figure~\ref{figure:repair-overview}.
+The typical workflow of a \GV automatic repair tool is depicted in Figure~\ref{figure:repair-overview}.
 
 \begin{figure}
     \includegraphics[width=\linewidth]{repair-overview}
@@ -27,7 +27,7 @@ After the ordered list of buggy statements is produced, the automatic repair too
 
 \subsection{GenProg}
 
-GenProg~\cite{le2012systematic} is an automatic repair tools based on genetic programming (GP); it randomly creates candidate fixes and refines them through GP---by exchanging, adding or removing statements---until one of the fixes passes all the test cases. The main assumption that GenProg makes is that the program already has correct fixes for the target bug somewhere in the program; the goal is to find the fixes, order them properly, and apply them in the correct location. Thus, if the program does not contain ``ingredients'' for the correct fix, then the target bug cannot be repaired. In addition, Qi et al.~\cite{qi2015analysis} showed that, for the benchmarks GenProg was evaluated on, most of the fixes correspond to simple functionality deletions; they do not fix the target bug but rather just delete the functionality in which the bug resides.
+GenProg~\cite{le2012systematic} is an automatic repair tool based on genetic programming (GP); it randomly creates candidate fixes and refines them through GP---by exchanging, adding or removing statements---until one of the fixes passes all the test cases. The main assumption that GenProg makes is that the program already has correct fixes for the target bug somewhere in the program; the goal is to find the fixes, order them properly, and apply them in the correct location. Thus, if the program does not contain ``ingredients'' for the correct fix, then the target bug cannot be repaired. In addition, Qi et al.~\cite{qi2015analysis} showed that, for the benchmarks GenProg was evaluated on, most of the fixes correspond to simple functionality deletions; they do not fix the target bug but rather just delete the functionality in which the bug resides.
 
 \subsection{SPR} 
 
