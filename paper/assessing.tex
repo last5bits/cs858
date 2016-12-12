@@ -165,10 +165,11 @@ The reason behind such a low number of correct patches in the GenProg and SPR se
 \end{figure}
 
 % Types
-Figure~\ref{figure:transforms} shows the distribution of SPR transformations among the correct patches inside SPR search space. Transformations of the type ``insert initialization'' prevail over all the other types.
+Figure~\ref{figure:transforms-old} shows the distribution of SPR transformations among the correct patches inside SPR search space. Transformations of the type ``insert initialization'' prevail over all the other types.
 Note: we assume that deletions of functionality can be fixed by a condition introduction of the form \texttt{if (0) { ... }}.
 
 \begin{figure}
+\begin{subfigure}[b]{.48\linewidth}
     \begin{tikzpicture}
     \begin{axis}[
         xbar, xmin=0,
@@ -185,7 +186,7 @@ Note: we assume that deletions of functionality can be fixed by a condition intr
         nodes near coords,
         nodes near coords align={horizontal},
         height=4.5cm,
-        width=\linewidth*.8,
+        width=\linewidth,
     ]
     \addplot[fill=blue] coordinates {
         (6,{CR})
@@ -195,6 +196,42 @@ Note: we assume that deletions of functionality can be fixed by a condition intr
         (2,VR)};
     \end{axis}
     \end{tikzpicture}
+    \small \caption{Default SPR transformations}
+    \label{figure:transforms-old}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{.48\linewidth}
+    \begin{tikzpicture}
+    \begin{axis}[
+        xbar, xmin=0,
+        xlabel={\# of patches},
+        symbolic y coords={
+            {CR},
+            {CI},
+            {CCFI},
+            {II},
+            VR
+        },
+        ytick=\empty,
+        ytick=data,
+        %y tick label style={rotate=30},
+        nodes near coords,
+        nodes near coords align={horizontal},
+        height=4.5cm,
+        width=\linewidth,
+    ]
+    \addplot[fill=blue] coordinates {
+        (10,{CR})
+        (2,{CI})
+        (21,{CCFI})
+        (9,{II})
+        (2,VR)};
+    \end{axis}
+    \end{tikzpicture}
+    \small \caption{Default + new SPR transformations}
+    \label{figure:transforms-new}
+\end{subfigure}
+
     \small \caption{Distribution of transformations employed in correct SPR patches. CR is Condition Refinement, CI is Condition Introduction, CCFI is Conditional Control Flow Introduction, II is Insert Initialization, VR is Value Replacement}
         \label{figure:transforms}
     \vspace{-0.2in}
