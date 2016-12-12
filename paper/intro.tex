@@ -31,11 +31,13 @@ In addition, they discovered that richer search spaces lead to \emph{fewer} corr
 Based on that, Long et al. outlined a need in more precise search spaces---the search spaces that would contain as many correct patches and as few overfitted patches as possible.
 
 % What has been done
-In our work, we created search spaces that are precise in two dimensions: (1) they target \emph{mobile systems} and (2) they target \emph{security vulnerabilities} specifically.
+In our work, we aimed at creating search spaces that are precise in two dimensions: (1) they target \emph{mobile systems} and (2) they target \emph{security vulnerabilities} specifically.
 The project consisted of the following stages:
 (1) mining vulnerabilities of mobile software from open-source repositories;
 (2) manual analysis of the retrieved patches;
 (3) devising the search spaces that contain correct patches for the analyzed vulnerabilities; and 
-(4) evaluating the search spaces in terms of how many correct patches they contain and what is the density of correct patches compared to the total number of patches.
-The result of our project is a set of targeted search spaces that aim at repairing mobile vulnerabilities.
+(4) evaluating the search spaces in terms of how many correct patches they contain.
+The result of our project is a search space for automatic repair tools that aim at repairing mobile vulnerabilities.
 To the best of our knowledge, there are no prior work of building \GV automatic repair tools specifically for fixing \emph{vulnerabilities} in \emph{mobile} software; this project will be the first step in building such a tool.
+
+The rest of the paper is structured as follows: Section~\ref{section:background} provides the reader with a background on automatic software repair; Section~\ref{section:mining} describes the process of obtaining developer patches for security vulnerabilities in Android; the empirical study that assess search spaces of previous automatic repair tools based on data obtained is shown in Section~\ref{section:assessing}; in Section~\ref{section:creating}, we propose a new search space that targets the examined vulnerabilities; Sections~\ref{section:limitations} and \ref{section:related} respectively provide threats to validity and related work; Section~\ref{section:conclusion} concludes.

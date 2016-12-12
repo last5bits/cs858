@@ -17,26 +17,26 @@ The typical workflow of a \GV automatic repair tool is depicted in the Figure~\r
 
 Along with a buggy program, a \GV tool also accepts two types of test cases:
 \begin{itemize}
-    \item \textbf{Positive} test cases that verify the existing program's functionality and
+    \item \textbf{Positive} test cases that verify the program's existing functionality and
     \item \textbf{Negative} test cases that expose the \emph{target} bug (i.e., the bug that the tool aims to fix)
 \end{itemize}
 
-The first step is the stage of \emph{fault localization} that produces a ranked list of statements that are considered to be buggy. Fault localization is a well-established area of Software engineering~\cite{wong2009survey} with many different approaches; the approach adopted by many automatic repair tools is as follows: instrument each statement in the buggy program and run the program with the provided test cases. Then, based on some metric, order the statements from the most likely to be buggy to the least likely. E.g., SPR's fault localization algorithm prefers the statements that are (1) executed with more negative test cases (2) fewer positive test cases and (3) encountered later whilst executing the program with negative test cases.
+The first step is the stage of \emph{fault localization} that produces a ranked list of statements that are suspected to be buggy. Fault localization is a well-established area of Software engineering~\cite{wong2009survey} with many different approaches; the approach adopted by most automatic repair tools is as follows: instrument each statement in the buggy program and run the program with the provided test cases. Then, based on some metric, order the statements from the most likely to be buggy to the least likely. E.g., SPR's fault localization algorithm prefers the statements that are (1) executed with more negative test cases (2) fewer positive test cases and (3) encountered later whilst executing the program with negative test cases.
 
-After the ordered list of buggy statements is produced, an automatic repair tool applies its \emph{transformations} to attempt to fix the target bug. These transformations depend on a search space that is employed by a particular tool. To verify the correctness of the fix applied, a repairer runs all the test cases: negative ones (to verify that the bug is gone) and positive ones (to verify that no regressions are introduced). If the test cases pass, then the patch is considered correct and it is presented to the developer; otherwise, a repairer picks another fix from the search space and repeats the previous steps.
+After the ordered list of buggy statements is produced, the automatic repair tool applies its \emph{transformations} to attempt to fix the target bug. These transformations depend on a search space that is employed by a particular tool. To verify the correctness of the fix applied, the repairer runs all the test cases: negative ones (to verify that the bug is gone) and positive ones (to verify that no regressions are introduced). If the test cases pass, then the patch is considered to be correct and it is presented to the developer; otherwise, a repairer picks another fix from the search space and repeats the previous steps.
 
 \subsection{GenProg}
 
-GenProg~\cite{le2012systematic} is an automatic repair tools based on genetic programming (GP); it randomly creates candidate fixes and refines them through GP---by exchanging, adding or removing statements---until one of the fixes passes all the test cases. The main assumption that GenProg makes is that the program already has correct fixes for the target bug somewhere in the program; the goal is to find the fixes and apply them in the correct location. Thus, if the program does not contain ``ingredients'' for the correct fix, then the target bug cannot be repaired. In addition, Qi et al.~\cite{qi2015analysis} showed that, for the benchmarks GenProg was evaluated on, most of the fixes correspond to simple functionality deletions; they do not fix the target bug but rather just delete the functionality in which the bug resides.
+GenProg~\cite{le2012systematic} is an automatic repair tools based on genetic programming (GP); it randomly creates candidate fixes and refines them through GP---by exchanging, adding or removing statements---until one of the fixes passes all the test cases. The main assumption that GenProg makes is that the program already has correct fixes for the target bug somewhere in the program; the goal is to find the fixes, order them properly, and apply them in the correct location. Thus, if the program does not contain ``ingredients'' for the correct fix, then the target bug cannot be repaired. In addition, Qi et al.~\cite{qi2015analysis} showed that, for the benchmarks GenProg was evaluated on, most of the fixes correspond to simple functionality deletions; they do not fix the target bug but rather just delete the functionality in which the bug resides.
 
-\subsection{SPR and Prophet}
+\subsection{SPR} 
 
-SPR~\cite{long2015staged} and Prophet~\cite{long2015prophet} share the same search spaces; Prophet extends SPR by a better prioritization of candidate fixes through learning from developer patches. Contrarily to GenProg, SPR's search spaces are deterministic; SPR applies its transformations in a certain order (the order is hard-coded) until either all the test cases pass or the search space is exhausted. Next, we present the transformations in the order that SPR applies them (Figure~\ref{figure:spr-repairs} shows from GenProg benchmarks on which SPR was evaluated).
+SPR~\cite{long2015staged} uses a notion of a so-called ``schema'', i.e., a patch template; putting different conditions into different schemas leads to a large search space with many correct patches. Contrarily to GenProg, SPR's search spaces are deterministic; SPR applies its transformations in a certain order (the order is hard-coded) until either all the test cases pass or the search space is exhausted. Next, we present the transformations in the order that SPR applies them (Figure~\ref{figure:spr-repairs} shows examples from GenProg benchmarks on which SPR was evaluated).
 
 \textbf{Condition refinement.} Transform an existing if-condition by adding ``\texttt{\&\& P}'' or ``\texttt{|| P}''; \texttt{P} is a new condition of the form ``\texttt{(v == const)}'' or ``\texttt{(v != const)}'', where \texttt{v} is an existing variable in the current scope.
 \emph{Note:} degenerate cases that either remove the whole if-block (\texttt{\&\& 0}) or always execute the if-block (\texttt{|| 1}) are possible as well.
 
-\textbf{Condition introduction.} Transforming an existing statement by adding an if-condition around it.
+\textbf{Condition introduction.} Transform an existing statement by adding an if-condition around it.
 
 \textbf{Conditional control flow introduction.} Put a conditional control-flow statement (e.g., \texttt{break}, \texttt{continue}, \texttt{return}) before a statement.
 
@@ -93,7 +93,7 @@ SPR~\cite{long2015staged} and Prophet~\cite{long2015prophet} share the same sear
 
 \subsection{Example of fixing a vulnerability automatically}
 
-Next, we discuss an example of fixing a simple buffer overflow vulnerability automatically. In Figure~\ref{figure:example}, there is an incorrect check at line~2 with the common ``off-by-one'' mistake that leads to a value being written past the end of the buffer; line~3 shows a probable human-written fix.
+Next, we present an example of fixing a simple buffer overflow vulnerability automatically. In Figure~\ref{figure:example}, there is an incorrect check at line~2 with the common ``off-by-one'' mistake that leads to a value being written past the end of the buffer; line~3 shows a probable human-written fix.
 
 Let us say that we are given a positive test case that verifies the correct value in the buffer at the index \texttt{x} (e.g., \texttt{assert(buf[x] == 0)}) and a negative test case that exposes the overflow (e.g., by making the initial value of \texttt{x} equal to \texttt{sizeof(buf)} and exposing the overflow with address sanitization\footnote{https://github.com/google/sanitizers/wiki/AddressSanitizer}).
 The simplest patch that an automatic tool can generate is a mere functionality deletion; in the absence of line 5, the negative test case would stop failing; however, a positive test case would fail and reveal an incorrect fix.

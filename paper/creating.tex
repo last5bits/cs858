@@ -1,18 +1,19 @@
 \section{Creating targeted search spaces}
+\label{section:creating}
 
 In this section, we propose new targeted search spaces that extend the transformations employed by SPR and suggest a different order in which those transformations should be applied.
 
 \subsection{Proposing new transformations}
 
-When creating new search spaces for automatic software repair tools, one should be careful not to introduce transformations that make the size of search space too large; this can lead not only to the increase of a number of correct patches in a search space, but also to the increase of a number of \emph{overfitted} patches. Therefore, we avoided proposing complex transformations; for example, multilevel condition introductions of the form \texttt{if (A \&\& B \&\& C)} lead to a large number of different combinations of conditions and can potentially make the search inefficient. With that in mind, we propose more conservative transformations as described below.
+When creating new search spaces for automatic software repair tools, one should be careful not to introduce transformations that make the size of a search space too large; this can lead not only to the increase of a number of correct patches in a search space, but also to the even greater increase of a number of \emph{overfitted} patches. Therefore, we avoided proposing complex transformations; for example, multilevel condition introductions of the form \texttt{if (A \&\& B \&\& C)} lead to a large number of different combinations of conditions and can potentially make the search ineffective. With that in mind, we propose more conservative transformations as described below.
 
 \textbf{Extending conditional operators.} In original SPR conditional transformations (i.e., condition introduction/refinement and conditional control flow introduction), only conditions of the form ``\texttt{(v == const)}'' or ``\texttt{(v != const)}'' are allowed. We propose to extend the original SPR transformations by using \texttt{<}, \texttt{>}, \texttt{<=}, \texttt{>=}. With these new transformations, SPR can potentially fix four more vulnerabilities with condition refinement and eight more vulnerabilities with conditional control flow introduction.
 
-\textbf{Boolean functions.} In addition, we propose to use calls to Boolean functions (i.e., functions return a Boolean value) inside conditional control flow introductions. With these new transformations, SPR can potentially fix eight more vulnerabilities. Figure~\ref{figure:new-ccfi} shows an example of such a transformation. This vulnerability (CVE-2014-9790) is in reading and writing routines of the Qualcomm driver MMC driver; it allows the attacker to escalate privileges via a ``specially crafted application''~\cite{cve-2014-9790}. A call to \texttt{access\_ok} verifies user privileges and aborts the function if access is denied.
+\textbf{Boolean functions.} In addition, we propose to use calls to Boolean functions (i.e., functions that return a Boolean value) inside conditional control flow introductions. With these new transformations, SPR can potentially fix eight more vulnerabilities. Figure~\ref{figure:new-ccfi} shows an example of such a transformation. This vulnerability (CVE-2014-9790) is in the reading and writing routines of the Qualcomm driver MMC driver; it allows the attacker to escalate privileges via a ``specially crafted application''~\cite{cve-2014-9790}. A call to \texttt{access\_ok} verifies user privileges and aborts the function if access is denied.
 
 With the aforementioned extensions, SPR can potentially fix 20 more vulnerabilities compared to the vanilla version of SPR; Figure~\ref{figure:transforms-new} shows a breakdown by each transformation category.
 
-We chose to extend SPR's search space rather than GenProg's due to significantly better results of SPR in terms of number of bugs fixed~\cite{long2015staged} and many of GenProg patches being degenerate functionality deletions in practice~\cite{qi2015analysis}.
+We chose to extend SPR's search space rather than GenProg's due to significantly better results of SPR in terms of number of bugs fixed~\cite{long2015staged} and due to many of GenProg patches being degenerate functionality deletions in practice~\cite{qi2015analysis}.
 
 \begin{figure}
 
@@ -26,9 +27,9 @@ We chose to extend SPR's search space rather than GenProg's due to significantly
 
 \subsection{Prioritizing the transformations}
 
-As Long et al.~\cite{long2016analysis} showed in their empirical study, introducing more complex conditions into conditional transformations can lead to a blow-up of overfitted patches and ultimately can hinder the process of bug repair. This problem should be mitigated by using a different prioritization of transformations; i.e., a different order in which transformations are applied to attempt to fix a vulnerability.
+As Long et al.~\cite{long2016analysis} showed in their empirical study, introducing more complex conditions into conditional transformations can lead to a blow-up of overfitted patches and ultimately can hinder the process of bug repair. We mitigate this by using a \emph{targeted} prioritization of transformations; i.e., a different order in which transformations are applied to attempt to fix a vulnerability.
 
-Based on the numbers in Figure~\ref{figure:transforms-new}, we suggest the following order in which transformations should be tried:
+Based on the numbers in Figure~\ref{figure:transforms-new}, we suggest the following order in which the transformations should be applied to attempt to fix a vulnerability:
 \begin{enumerate}
     \item Conditional control flow introduction
     \item Condition refinement

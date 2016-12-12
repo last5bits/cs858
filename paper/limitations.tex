@@ -1,7 +1,7 @@
 \section{Limitations \& Threats to validity}
 \label{section:limitations}
 
-The concept of search space is relevant only to search-based automatic repair tools (e.g., SPR~\cite{long2015staged}, Prophet~\cite{long2015prophet} or GenProg~\cite{le2012systematic}).
+The concept of a search space is relevant only to search-based automatic repair tools (e.g., SPR~\cite{long2015staged}, Prophet~\cite{long2015prophet} or GenProg~\cite{le2012systematic}).
 The research community works on other approaches as well; for example, \emph{semantic-based} automatic repair (DirectFix~\cite{directfix}, Angelix~\cite{mechtaev2016angelix}), in which a repair produced by employing symbolic execution and constraint solving.
 
 % Some patches may contain code unrelated to the vulnerability
@@ -11,12 +11,11 @@ To mitigate this issue, a more rigorous empirical study should be conducted, in 
 
 % Human bias in the empirical study
 Since the empirical study is performed by the authors manually, there is a risk of human bias.
-We mitigated this risk by examining each vulnerability by two of the authors independently and discussing a vulnerability in the case of different opinions.
+%We mitigated this risk by examining each vulnerability by two of the authors independently and discussing a vulnerability in the case of different opinions.
 %We mitigated this risk by following a specific procedure when deciding whether a particular patch can be repaired by a tool.
-
-In the process of manual examination, it does not seem feasible to decide whether the "Copy and Replace" SPR transformation can be used to repair a specific vulnerability; this is due to a great number of possible combinations of statements that can be copied and replaced.
-This can be solved by creating a tool that generates all these combinations and checks a vulnerability automatically.
-This limitation of our study is mitigated by the fact that the "Copy and Replace" transformation has the lowest priority and is not applied often in practice (based on our personal experience of examining SPR patches for GenProg benchmarks).
+Additionally, in the process of manual examination, it does not seem feasible to decide whether the "Copy and Replace" SPR transformation can be used to repair a specific vulnerability; this is due to a great number of possible combinations of statements that can be copied and replaced.
+This can be solved by creating a tool that generates all the possible combinations and checks a patch automatically.
+This limitation of our study is mitigated by the fact that the "Copy and Replace" transformation has the lowest priority in vanilla SPR and is not applied often in practice (based on our experience of examining SPR patches for GenProg benchmarks).
 
 % Limited number of vulnerabilities
 The results of our study might not generalize to all the vulnerabilities or all the mobile software systems due to the empirical nature of the study.

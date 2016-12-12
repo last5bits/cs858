@@ -1,0 +1,6 @@
+size_t mmc_wr_pack_stats_write(...)
+ 	if (!card)
+ 		return cnt;
+
++	if (!access_ok(VERIFY_READ, ubuf, cnt))
++		return cnt;

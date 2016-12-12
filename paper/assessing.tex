@@ -1,4 +1,5 @@
 \section{Assessing search spaces of GenProg and SPR}
+\label{section:assessing}
 
 In this section, we describe the empirical study, in which we manually examined \numvuln Android vulnerabilities to assess the effectiveness of GenProg and SPR search spaces, and present the results.
 
@@ -14,7 +15,7 @@ Section~\ref{section:background} provides information on how GenProg and SPR sea
 % website
 To facilitate the process of manual examination, we created a service in the form of a website that allows to go through all the vulnerabilities and make a decision for each.
 Figure~\ref{figure:website-main} shows the main page of the website that lists all the vulnerabilities.
-By clicking on a vulnerability, a vulnerability (using the ASB terminology, cf. Section~\ref{section:mining-acquiring}) description open (Figure~\ref{figure:website-vuln}); it also allows to go to the next of the previous vulnerability.
+By clicking on a link, a vulnerability (using the ASB terminology, cf. Section~\ref{section:mining-acquiring}) description opens (Figure~\ref{figure:website-vuln}); it also allows to go to the next of the previous vulnerability.
 A vulnerability page contains a list of associated CVEs; by clicking on a CVE link, a CVE-description page opens (Figure~\ref{figure:website-cve}).
 This page also contains the developer patch that fixes this CVE; the patch is presented by pulling the \texttt{git diff} information from a corresponding git-repository.
 To assess the GenProg search space, an ingredient search can be conducted by putting a particular statement into the search bar (cf. Figure~\ref{figure:website-marking}).
@@ -40,7 +41,7 @@ These materials should be helpful not only for the purposes of reproducing our s
 
 \begin{subfigure}[b]{\linewidth}
     \includegraphics[width=\linewidth]{website-cve}
-    \caption{CVE information}
+    \caption{CVE description}
     \label{figure:website-cve}
 \end{subfigure}
 
@@ -166,7 +167,7 @@ The reason behind such a low number of correct patches in the GenProg and SPR se
 
 % Types
 Figure~\ref{figure:transforms-old} shows the distribution of SPR transformations among the correct patches inside SPR search space. Transformations of the type ``insert initialization'' prevail over all the other types.
-Note: we assume that deletions of functionality can be fixed by a condition introduction of the form \texttt{if (0) { ... }}.
+Note: we assume that deletions of functionality can be fixed by a condition introduction of the form \texttt{if~(0)~\{ ... \}}.
 
 \begin{figure}
 \begin{subfigure}[b]{.48\linewidth}
@@ -238,4 +239,4 @@ Note: we assume that deletions of functionality can be fixed by a condition intr
 \end{figure}
 
 % Open access
-We give open access to the SQL database with the results of this empirical study\footnote{host: lt-pc1.uwaterloo.ca; DB name: cs858; user/pw: guest/guest}.
+In addition, we provide open access to the SQL database with the results of this empirical study\footnote{host: lt-pc1.uwaterloo.ca; DB name: cs858; user/pw: guest/guest}.
